@@ -4,7 +4,9 @@
   "description": "a web app for reading.",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "webpack-dev-server --mode development --hot --progress --colors --port 3000 --open",
+    "build": "webpack -p --progress --colors",
+    "test": "jest --coverage"
   },
   "repository": {
     "type": "git",
@@ -20,5 +22,31 @@
   "bugs": {
     "url": "https://github.com/BohengLiu/Reader/issues"
   },
-  "homepage": "https://github.com/BohengLiu/Reader#readme"
+  "homepage": "https://github.com/BohengLiu/Reader#readme",
+  "devDependencies": {
+    "@babel/core": "^7.2.2",
+    "@babel/preset-env": "^7.3.1",
+    "@babel/preset-react": "^7.0.0",
+    "babel-loader": "^8.0.5",
+    "css-loader": "^2.1.0",
+    "enzyme": "^3.8.0",
+    "enzyme-adapter-react-16": "^1.9.1",
+    "jest": "^24.1.0",
+    "json-loader": "^0.5.7",
+    "react-test-renderer": "^16.8.1",
+    "react-testing-library": "^5.5.3",
+    "style-loader": "^0.23.1",
+    "ts-jest": "^23.10.5",
+    "webpack": "^4.29.0",
+    "webpack-cli": "^3.2.1",
+    "webpack-dev-server": "^3.1.14"
+  },
+  "dependencies": {
+    "mobx": "^5.9.0",
+    "mobx-react": "^5.4.3",
+    "react": "^16.7.0",
+    "react-dom": "^16.7.0",
+    "react-router": "^4.3.1",
+    "react-router-dom": "^4.3.1"
+  }
 }
