@@ -1,8 +1,9 @@
 import React,{Component } from 'react'
+import ePub from 'epubjs'
 
 export class Shelf extends Component{
   
-  logfile(e){
+  logfile(e) {
     e.persist()
     console.log(e)
     let targetFile = e.target.files[0]
@@ -13,6 +14,31 @@ export class Shelf extends Component{
       console.log(reader)
       reader.onload = (e) => {
         console.log('onload e:',e)
+        let book = ePub({
+          bookPath: e.target.result
+        })
+        console.log(book)
+        
+          // var key = new Date().getTime() + '',
+          //     name = metadata.bookTitle,
+          //     author = metadata.creator,
+          //     article = new Book(key, name, author, e.target.result);
+
+          // console.log(metadata);
+          // addBookToPage(article);
+          // bookDB.open(function () {
+          //     bookDB.addBook(
+          //         article,
+          //         function () {
+          //             console.log('add book successfully!');
+          //         },
+          //         function () {
+          //             console.log('some error occured!');
+          //         }
+          //     );
+          // });
+      // });
+
       }
     } else {
       alert('Your browser does not support the required features. Please use a modern browser such as Google Chrome, or Mozilla Firefox')

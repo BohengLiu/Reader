@@ -48,6 +48,15 @@ git clone https://github.com/yunser/epub-front.git
 技术栈:  
 Vue 
 
+## epubjs-reader
+```shell
+git clone https://github.com/futurepress/epubjs-reader.git
+```
+
+## epub.js
+```shell
+git clone https://github.com/futurepress/epub.js.git
+```
 
 
 
