@@ -25,6 +25,8 @@
   "homepage": "https://github.com/BohengLiu/Reader#readme",
   "devDependencies": {
     "@babel/core": "^7.2.2",
+    "@babel/plugin-proposal-class-properties": "^7.3.3",
+    "@babel/plugin-proposal-decorators": "^7.3.0",
     "@babel/preset-env": "^7.3.1",
     "@babel/preset-react": "^7.0.0",
     "babel-loader": "^8.0.5",
@@ -42,8 +44,11 @@
     "webpack-dev-server": "^3.1.14"
   },
   "dependencies": {
+    "epub": "^1.1.0",
+    "history": "^4.7.2",
     "mobx": "^5.9.0",
     "mobx-react": "^5.4.3",
+    "mobx-react-router": "^4.0.5",
     "react": "^16.7.0",
     "react-dom": "^16.7.0",
     "react-router": "^4.3.1",
