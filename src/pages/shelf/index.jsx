@@ -1,5 +1,5 @@
 import React,{Component } from 'react'
-import ePub from 'epubjs'
+import {Book} from 'epubjs'
 
 export class Shelf extends Component{
   
@@ -14,7 +14,7 @@ export class Shelf extends Component{
       console.log(reader)
       reader.onload = (e) => {
         console.log('onload e:',e)
-        let book = ePub({
+        let book = new Book({
           bookPath: e.target.result
         })
         console.log(book)
