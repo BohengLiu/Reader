@@ -13,6 +13,7 @@ export class Home extends Component{
         <Link to="/login">To Login</Link>
         <button onClick={this.handleTurnToLogin}>To Login</button>
         <Link to="/shelf">To Shelf</Link>
+        <Link to="/book">To Book</Link>
       </div>
     )
   }
