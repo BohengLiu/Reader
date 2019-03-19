@@ -87,15 +87,16 @@ export class Book extends Component{
       // var $author = document.getElementById("author");
       // var $cover = document.getElementById("cover");
       // var $nav = document.getElementById('navigation');
-      if (this._book.archive) {
+      if (this._book.archived) {
         this._book.archive.createUrl(this._book.cover)
-          .then(function (url) {
+          .then( url => {
             console.log('cover',url)
+            this.cover = url
           })
       } else {
         console.log('cover',this._book.cover);
       }
-      console.log(this._book.archive)
+      // console.log(this._book.archive)
       // $title.textContent = meta.title;
       // $author.textContent = meta.creator;
       
@@ -121,6 +122,7 @@ export class Book extends Component{
     return (
       <div>
         <div className="sidebar">
+        <img src={this.cover} />
         <ul>{this.toc.map(chapter=>{
           return (<li>{chapter.label}</li>)
         })}</ul>

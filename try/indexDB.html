@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.1.5/jszip.min.js"></script>
+  <script src="./epub.js"></script>
+  <title>Document</title>
+</head>
+
+<body>
+  <div id="title"><input type="file" id="input"><button id="save">put in</button><button id="display">show</button></div>
+  <img id="cover" />
+  <div id="viewer" class="spreads"></div>
+  <!-- <a id="prev" href="#prev" class="arrow">‹</a>
+  <a id="next" href="#next" class="arrow">›</a> -->
+
+  <script>
+    var book = ePub();
+    var rendition;
+
+    var inputElement = document.getElementById("input");
+
+    inputElement.addEventListener('change', function (e) {
+      var file = e.target.files[0];
+      if (window.FileReader) {
+        var reader = new FileReader();
+        reader.onload = saveBook;
+        reader.readAsArrayBuffer(file);
+      }
+    });
+
+    function saveBook(e) {
+      var bookData = e.target.result
+      var request = window.indexedDB.open('bookdb', 2);
+      request.onerror = function (event) {
+        console.log('数据库打开报错');
+      };
+      var db;
+      request.onsuccess = function (event) {
+        db = request.result;
+        console.log('数据库打开成功');
+        // var store = db.createObjectStore('book', {
+        //   keyPath: 'id',
+        //   autoIncrement: false
+        // })
+
+        // if(db.objectStoreNames.contains('chat')) {
+        //   console.log('存在book')
+        // }
+
+        // console.log(db.objectStoreNames)
+        // var transaction = db.transaction(["book"], 'readwrite');
+        var req = db.transaction(["book"], 'readwrite')
+          .objectStore('book')
+          .add({
+            id: 5,
+            book: bookData
+          })
+        req.onsuccess = function (e) {
+          console.log('数据保存成功', e)
+
+        }
+        // req.onerror = function (e) {
+        //   console.log('数据写入失败', e)
+        // }
+      };
+      request.onupgradeneeded = function (event) {
+        db = event.target.result;
+        var store = db.createObjectStore('book', {
+          keyPath: 'id',
+          autoIncrement: false
+        })
+        console.log('数据库新建成功');
+      }
+    }
+
+    var save = document.getElementById('save')
+    save.addEventListener('click', function () {
+      var request = window.indexedDB.open('bookdb', 2);
+      request.onerror = function (event) {
+        console.log('数据库打开报错');
+      };
+      var db;
+      request.onsuccess = function (event) {
+        db = request.result;
+        console.log('数据库打开成功');
+        // 
+        var req = db.transaction(["book"], 'readwrite')
+          .objectStore('book')
+          .put({
+            id: 1,
+            book: 3
+          })
+        req.onsuccess = function (e) {
+          console.log('数据保存成功', e)
+          console.log(e.result)
+        }
+        req.onerror = function (e) {
+          console.log('数据保存失败', e)
+        }
+      };
+      request.onupgradeneeded = function (event) {
+        db = event.target.result;
+        var store = db.createObjectStore('book', {
+          keyPath: 'id',
+          autoIncrement: false
+        })
+        console.log('数据库新建成功');
+      }
+    })
+
+
+    var show = document.getElementById('display')
+    show.addEventListener('click', function () {
+      var request = window.indexedDB.open('bookdb', 2);
+      request.onerror = function (event) {
+        console.log('数据库打开报错');
+      };
+      var db;
+      request.onsuccess = function (event) {
+        db = request.result;
+        console.log('数据库打开成功');
+        // 
+        var objectStore = db.transaction('book').objectStore('book');
+
+        // objectStore.openCursor().onsuccess = function (event) {
+        //   var cursor = event.target.result;
+
+        //   if (cursor) {
+        //     console.log('Id: ' + cursor.value.id);
+        //     console.log('Id: ' + cursor.key);
+        //     console.log('book: ' + cursor.value.book);
+        //     cursor.continue();
+        //   } else {
+        //     console.log('没有更多数据了！');
+        //   }
+        // };
+        var req = db.transaction(["book"], 'readwrite')
+          .objectStore('book')
+          .get(4)
+        req.onsuccess = function (e) {
+          console.log('数据取出成功', e)
+          console.log(req.result)
+
+          book.open(req.result.book);
+
+          rendition = book.renderTo("viewer", {
+            width: "100%",
+            height: 600
+          });
+
+          rendition.display();
+
+
+        }
+        req.onerror = function (e) {
+          console.log('数据取出失败', e)
+        }
+      };
+      request.onupgradeneeded = function (event) {
+        db = event.target.result;
+        var store = db.createObjectStore('book', {
+          keyPath: 'id',
+          autoIncrement: false
+        })
+        console.log('数据库新建成功');
+      }
+    })
+    // function dbsavebook(db, book) {
+    //   const tx = db.transaction("book", 'readwrite')
+    //   const store = tx.objectStore('book')
+    //   const req = store.add({
+    //     id: 1,
+    //     book: book
+    //   })
+    //   req.onsuccess = function (e) {
+    //     console.log('数据保存成功', e)
+    //   }
+    //   req.onerror = function (e) {
+    //     console.log('数据写入失败', e)
+    //   }
+    // }
+
+    // function openBook(e) {
+    //   var bookData = e.target.result;
+    //   var title = document.getElementById("title");
+    //   var next = document.getElementById("next");
+    //   var prev = document.getElementById("prev");
+
+    //   book.open(bookData);
+
+    //   rendition = book.renderTo("viewer", {
+    //     width: "100%",
+    //     height: 600
+    //   });
+
+    //   rendition.display();
+
+    //   rendition.on("keyup", keyListener);
+    //   rendition.on("relocated", function (location) {
+    //     console.log(location);
+    //   });
+
+    //   next.addEventListener("click", function (e) {
+    //     rendition.next();
+    //     e.preventDefault();
+    //   }, false);
+
+    //   prev.addEventListener("click", function (e) {
+    //     rendition.prev();
+    //     e.preventDefault();
+    //   }, false);
+
+    //   var keyListener = function (e) {
+
+    //     // Left Key
+    //     if ((e.keyCode || e.which) == 37) {
+    //       rendition.prev();
+    //     }
+
+    //     // Right Key
+    //     if ((e.keyCode || e.which) == 39) {
+    //       rendition.next();
+    //     }
+
+    //   };
+
+
+    //   document.addEventListener("keyup", keyListener, false);
+    // }
+  </script>
+  <!-- <script>
+    var request = window.indexedDB.open('bookDB', 1);
+    request.onerror = function (event) {
+      console.log('数据库打开报错');
+    };
+    var db;
+    request.onsuccess = function (event) {
+      db = request.result;
+      console.log('数据库打开成功');
+    };
+    request.onupgradeneeded = function (event) {
+      db = event.target.result;
+      console.log('数据库新建成功');
+    }
+  </script> -->
+</body>
+
+</html>
